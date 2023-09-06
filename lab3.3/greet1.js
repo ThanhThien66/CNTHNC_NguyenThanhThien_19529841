@@ -5,8 +5,8 @@ module.exports = function(options = {}) { // Router factory
  const {service} = options;
  router.get('/greet', (req, res, next) => {
     res.end(
-        service.createGreeting(req.query.name || 'Stranger')
+            service.createGreeting(req.query.name || 'Stranger')
         );
-        });
-        return router;
-       };
+    });
+    return router;
+};
