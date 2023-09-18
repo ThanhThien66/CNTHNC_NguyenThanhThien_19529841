@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+  <h2>Danh sách người dùng</h2>
+
+  <ul id="userList">
+  </ul>
+
+  <script>
+    // Hàm để thực hiện yêu cầu GET danh sách người dùng
+    function getUsers() {
+      fetch('/users')
+        .then(response => response.json())
+        .then(data => {
+          const userList = document.getElementById('userList');
+          userList.innerHTML = '';
+          data.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${user.id}: ${user.name}`;
+            userList.appendChild(listItem);
+          });
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Hàm để thực hiện yêu cầu POST tạo người dùng mới
+    function createUser() {
+      const name = prompt('Nhập tên người dùng:');
+      fetch('/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name })
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(`Người dùng mới đã được tạo: ${data.id}: ${data.name}`);
+          getUsers();
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Hàm để thực hiện yêu cầu PUT cập nhật thông tin người dùng
+    function updateUser() {
+      const id = prompt('Nhập ID người dùng cần cập nhật:');
+      const name = prompt('Nhập tên mới:');
+      fetch(`/users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name })
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(`Thông tin người dùng đã được cập nhật: ${data.id}: ${data.name}`);
+          getUsers();
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Hàm để thực hiện yêu cầu DELETE xóa người dùng
+    function deleteUser() {
+      const id = prompt('Nhập ID người dùng cần xóa:');
+      fetch(`/users/${id}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(`Người dùng đã bị xóa: ${data.id}: ${data.name}`);
+          getUsers();
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Gọi hàm getUsers() để lấy danh sách người dùng ban đầu
+    getUsers();
+  </script>
+
+  <button onclick="createUser()">Tạo người dùng mới</button>
+  <button onclick="updateUser()">Cập nhật thông tin người dùng</button>
+  <button onclick="deleteUser()">Xóa người dùng</button>
+
+</body>
+</html>
