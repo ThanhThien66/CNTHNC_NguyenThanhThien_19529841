@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const filePath = 'gggg/file.txt'; // Đường dẫn tới tệp tin cần mở
+const filePath = 'file.txt'; // Đường dẫn tới tệp tin cần mở
 
 fs.open(filePath, 'r', (err, fd) => {
   if (err) {
@@ -18,14 +18,6 @@ fs.open(filePath, 'r', (err, fd) => {
     }
 
     const fileContent = buffer.toString('utf8', 0, bytesRead);
-    console.log('File content:', fileContent);
-
-    fs.close(fd, (err) => {
-      if (err) {
-        console.error('Error closing file:', err);
-        return;
-      }
-      console.log('File closed');
-    });
-  });
+    console.log('File đã đc mở:', fileContent);
+  }); 
 });

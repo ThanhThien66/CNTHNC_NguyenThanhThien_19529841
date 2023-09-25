@@ -1,35 +1,17 @@
+// Tạo một đối tượng EventEmitter mới
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+
+// Tạo một file mới tên là test.txt
 const fs = require('fs');
+const file = fs.createWriteStream('file.txt');
 
-const filePath = 'gggg/file.txt'; // Đường dẫn tới tệp tin cần đóng
-
-fs.open(filePath, 'r', (err, fd) => {
-  if (err) {
-    console.error('Error opening file:', err);
-    return;
-  }
-
-  const bufferSize = 1024;
-  const buffer = Buffer.alloc(bufferSize);
-
-  fs.read(fd, buffer, 0, bufferSize, 0, (err, bytesRead, buffer) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      return;
-    }
-
-    const fileContent = buffer.toString('utf8', 0, bytesRead);
-    console.log('File content before closing:', fileContent);
-
-    fs.close(fd, (err) => {
-      if (err) {
-        console.error('Error closing file:', err);
-        return;
-      }
-      
-      console.log('File closed');
-      
-      // Đoạn mã này sẽ được thực hiện sau khi tệp tin đã được đóng
-      console.log('File content after closing:', fileContent);
-    });
-  });
+// Đăng ký hàm callback cho sự kiện khi file được đóng
+emitter.on('close', (filename) => {
+  // In ra terminal nội dung là file được đóng, kèm theo tên file
+  console.log(`File ${filename} đã được đóng`);
 });
+
+// Đóng file và phát sinh sự kiện khi file được đóng, truyền vào tên file làm tham số
+file.end();
+emitter.emit('close', 'file.txt');

@@ -11,7 +11,7 @@ const exchangeRates = {
 // Route xử lý yêu cầu chuyển đổi ngoại tệ
 app.get('/convert', (req, res) => {
   const { amount, from, to } = req.query;
-
+a
   if (!amount || !from || !to) {
     return res.status(400).json({ error: 'Missing required parameters' });
   }
